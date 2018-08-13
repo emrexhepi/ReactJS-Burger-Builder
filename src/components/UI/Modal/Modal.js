@@ -2,7 +2,7 @@
 import React from "react";
 
 // import components
-import Aux from '../../hoc/Auxiliary';
+import Aux from '../../../hoc/Auxiliary';
 import Backdrop from '../Backdrop/Backdrop';
 
 // import styles
