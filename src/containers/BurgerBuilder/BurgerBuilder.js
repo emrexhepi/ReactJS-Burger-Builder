@@ -62,6 +62,10 @@ class BurgerBuilder extends Component {
         });
     }
 
+    orderContinureHandler = () => {
+        alert("You continue!");
+    }
+
     addIngredientHandler = (type) => {
 
         // add the ingridient to state.ingridients
@@ -126,7 +130,10 @@ class BurgerBuilder extends Component {
                 <Modal
                     show={this.state.ordering}
                     modalClosed={this.orderCancelHandler} >
-                    <OrderSummary ingredients={this.state.ingredients}/>
+                    <OrderSummary 
+                        ingredients={this.state.ingredients}
+                        cancelOrder={this.orderCancelHandler}
+                        continueOrder={this.orderContinureHandler}/>
                 </Modal>
                 <Burger ingredients={this.state.ingredients} />
                 <BuildControls
