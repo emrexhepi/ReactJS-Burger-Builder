@@ -1,0 +1,22 @@
+.Hamburger {
+    display: block;
+    transition: all .15s ease-in-out;
+}
+
+.Hamburger div {
+    width: 35px;
+    height: 5px;
+    background-color: white;
+    margin: 6px 0;
+}
+
+.Hamburger:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+@media (min-width: 500px) {
+    .Hamburger {
+        display: none;
+    }
+}
