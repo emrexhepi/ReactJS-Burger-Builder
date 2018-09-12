@@ -22,16 +22,23 @@ const INGRIDIENT_PRICES = {
 class BurgerBuilder extends Component {
 
     state = {
-        ingredients : {
-            salad : 0,
-            bacon : 0,
-            cheese: 0,
-            meat : 0
-        },
+        ingredients : null,
         totalPrice : 4,
         purchaseable : false,
         ordering : false,
-        loadig : false
+        loadig : false,
+        error : false
+    }
+
+    async componentDidMount () {
+        try {
+            const response = await axios.get('/ingredients.json');
+            this.setState({ingredients: response.data});
+        } catch (e) {
+            
+            this.setState({loadig: false, error: true});
+            console.log(e);
+        }
     }
 
     updatePurchaseState(ingredients) {
@@ -68,7 +75,7 @@ class BurgerBuilder extends Component {
         });
     }
 
-    async orderContinureHandler () {
+    async orderContinueHandler () {
         this.setState({loadig: true});
         
         try {
@@ -87,7 +94,7 @@ class BurgerBuilder extends Component {
                 }
             }
 
-            await axios.post('/orders', order);
+            await axios.post('/orders.json', order);
             
             this.setState({loadig: false, ordering: false});
         } catch (e) {
@@ -155,12 +162,36 @@ class BurgerBuilder extends Component {
 
         for(let key in disabledInfo)
             disabledInfo[key] = disabledInfo[key] <= 0;
+        
+        let orderSummary = null;
 
-        let orderSummary = <OrderSummary 
+        if( this.state.ingredients ) {
+            orderSummary = <OrderSummary 
                                 ingredients={this.state.ingredients}
                                 cancelOrder={this.orderCancelHandler}
-                                continueOrder={()=>{this.orderContinureHandler()}}
+                                continueOrder={()=>{this.orderContinueHandler()}}
                                 price={this.state.totalPrice}/>
+        }
+
+        let burger =  this.state.error ?
+            <p>Ingredients can't be loaded!</p>:
+            <Spinner />;
+
+        if( this.state.ingredients ) {
+            burger = 
+                <Aux>
+                    <Burger ingredients={this.state.ingredients} />
+                    <BuildControls
+                        price={ this.state.totalPrice.toFixed(2) } 
+                        ingredientAdded={this.addIngredientHandler}
+                        ingredientRemoved={this.removeIngredientHandler}
+                        disabled={disabledInfo}
+                        purchaseable = {this.state.purchaseable}
+                        order={this.orderHandler}
+                        />
+                </Aux>
+            ;
+        }
 
         // check if loading
         if (this.state.loadig) {
@@ -174,15 +205,7 @@ class BurgerBuilder extends Component {
                     modalClosed={this.orderCancelHandler} >
                     {orderSummary}
                 </Modal>
-                <Burger ingredients={this.state.ingredients} />
-                <BuildControls
-                    price={ this.state.totalPrice.toFixed(2) } 
-                    ingredientAdded={this.addIngredientHandler}
-                    ingredientRemoved={this.removeIngredientHandler}
-                    disabled={disabledInfo}
-                    purchaseable = {this.state.purchaseable}
-                    order={this.orderHandler}
-                    />
+                { burger }
             </Aux>
         );
     }
