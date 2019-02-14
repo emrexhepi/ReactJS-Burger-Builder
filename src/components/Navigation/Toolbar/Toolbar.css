@@ -4,7 +4,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #703b09;
+    background-color: #703B09;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -17,18 +17,12 @@
     height: 100%;
 }
 
-.LogoHolder {
-    height : 80%;
-    width: auto;
-    float: right;
+.Logo {
+    height: 80%;
 }
 
-.NavigationHolder {
-    display: none;
-}
-
-@media (min-width:500px) {
-    .NavigationHolder {
-        display: inline;
+@media (max-width: 499px) {
+    .DesktopOnly {
+        display: none;
     }
 }

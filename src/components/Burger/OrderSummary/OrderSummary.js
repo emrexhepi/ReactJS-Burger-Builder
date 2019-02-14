@@ -1,36 +1,34 @@
-//import libraries
-import React from "react";
+import React, { Component } from 'react';
+import Button from '../../UI/Button/Button';
 
-// import components
-import Aux from "../../../hoc/Auxiliary";
-import Button from "../../UI/Button/Button";
+import Aux from './../../../hoc/Auxiliary';
 
-class OrderSummary extends React.Component{
-    // This could be a functional component
-    // the performance improvements were made to Modal component;
-    componentWillUpdate(){
-        // console.log('[OrderSummary.js] will update');
+class OrderSummary extends Component {
+    // This could be a functional component, doesn't have to be a class
+    componentWillUpdate() {
+        console.log('[OrderSummary] WillUpdate');
     }
 
-    render() {
-        // build ingredients list
-        const ingredientsSummary = Object.keys(this.props.ingredients).map((key)=>{
-            return <li key={key}>
-                        <span style={{textTransform: 'capitalize'}}>{key}</span> : {this.props.ingredients[key]}
-                    </li>
-        });
+    render () {
+        const ingredientSummary = Object.keys( this.props.ingredients )
+            .map( igKey => {
+                return (
+                    <li key={igKey}>
+                        <span style={{ textTransform: 'capitalize' }}>{igKey}</span>: {this.props.ingredients[igKey]}
+                    </li> );
+            } );
 
         return (
             <Aux>
-                <h3>Your Burger:</h3>
-                <p>A delicious burger with the following ingredients: </p>
+                <h3>Your Order</h3>
+                <p>A delicious burger with the following ingredients:</p>
                 <ul>
-                    {ingredientsSummary}
+                    {ingredientSummary}
                 </ul>
-                <p><strong>Total Price: ${this.props.price.toFixed(2)}</strong></p>
-                <p> Continue ti Checkout ?</p>
-                <Button clicked={this.props.cancelOrder} btnType="Danger">CANCEL</Button>
-                <Button clicked={this.props.continueOrder} btnType="Success">CONTINUE</Button>
+                <p><strong>Total Price: {this.props.price.toFixed( 2 )}</strong></p>
+                <p>Continue to Checkout?</p>
+                <Button btnType="Danger" clicked={this.props.purchaseCancelled}>CANCEL</Button>
+                <Button btnType="Success" clicked={this.props.purchaseContinued}>CONTINUE</Button>
             </Aux>
         );
     }

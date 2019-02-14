@@ -1,36 +1,33 @@
-import React, {Component} from "react";
+import React, { Component } from 'react';
 
-// cpomonents
-import Aux from "../Auxiliary";
-import classes from "./Layout.css";
-import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
+import classes from './Layout.css';
+import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 
+import Aux from './../../hoc/Auxiliary';
 
 class Layout extends Component {
-
     state = {
         showSideDrawer: false
     }
 
-    closeSideDrawerHandler = ()=>{
-        this.setState({showSideDrawer: false});
+    sideDrawerClosedHandler = () => {
+        this.setState( { showSideDrawer: false } );
     }
 
-    openSideDrawerHandler = ()=>{
-        this.setState({showSideDrawer: true});
+    sideDrawerToggleHandler = () => {
+        this.setState( ( prevState ) => {
+            return { showSideDrawer: !prevState.showSideDrawer };
+        } );
     }
 
-    render() {
+    render () {
         return (
             <Aux>
-                <Toolbar openSideDrawer={this.openSideDrawerHandler}
-                    />
-                    
+                <Toolbar drawerToggleClicked={this.sideDrawerToggleHandler} />
                 <SideDrawer
                     open={this.state.showSideDrawer}
-                    closeSideDrawer={this.closeSideDrawerHandler}/>
-
+                    closed={this.sideDrawerClosedHandler} />
                 <main className={classes.Content}>
                     {this.props.children}
                 </main>
